@@ -1,12 +1,16 @@
 import { authenticateUser } from "$lib/server/auth";
-import { getSignoutUrlRedirect, parseJWT, getTokens, getSignoutUrl } from "$lib/server/helpers"
+import { getSignoutUrlRedirect, parseJWT, getTokens } from "$lib/server/helpers"
 import { redirect } from "@sveltejs/kit"
 import type { Handle } from "@sveltejs/kit";
+import { connection } from "$lib/server/db";
 
 export const handle = (async ({event, resolve})=> {
 	// first check if id_token exists, this tells us if someone
 	// is logged in or authenticated
 	event.locals.user = authenticateUser(event)
+	let dbconn
+
+
 
 	// protected routes
 	// change the /vault to your preferred protected route
@@ -44,9 +48,17 @@ export const handle = (async ({event, resolve})=> {
 				const signOutUrl = getSignoutUrlRedirect() 
 				throw redirect(307, signOutUrl)
 			}
+		} 	
+
+		dbconn = await connection() 
+		if (dbconn){
+			event.locals.dbconn = dbconn
 		}
 	} 
-	console.log('hello')
 	const response = await resolve(event);
+	if (dbconn) {
+		dbconn.release()
+	}
 	return response;
+
 }) satisfies Handle
