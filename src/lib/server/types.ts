@@ -32,3 +32,13 @@ export type userInfoResponse = {
     "email": string,
     "cognito:username": string
 }
+
+export type BookmarksResponse = {
+	id: number
+	title: string
+	url: string
+	tags: number[] | null
+	type: string
+	created_at: Date
+	updated_at: Date
+} 
