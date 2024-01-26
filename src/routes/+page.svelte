@@ -1,2 +1,10 @@
-<h1>Welcome to SvelteKit</h1>
-<p>Visit <a href="https://kit.svelte.dev">kit.svelte.dev</a> to read the documentation</p>
+<script lang="ts">
+	export let data
+</script>
+
+<h1>Sample Landing Page</h1>
+{#if data.username}
+	<a href='/vault/home'>Sign in as {data.username}?</a>
+{:else}
+	<a href={data.signInUrl}>Sign in</a>
+{/if}
