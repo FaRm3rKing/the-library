@@ -49,16 +49,11 @@ export const handle = (async ({event, resolve})=> {
 				throw redirect(307, signOutUrl)
 			}
 		} 	
-
-		dbconn = await connection() 
-		if (dbconn){
-			event.locals.dbconn = dbconn
-		}
+		dbconn = await connection?.getConnection()
+		event.locals.dbconn = dbconn
 	} 
 	const response = await resolve(event);
-	if (dbconn) {
-		dbconn.release()
-	}
+	dbconn?.release()
 	return response;
 
 }) satisfies Handle
