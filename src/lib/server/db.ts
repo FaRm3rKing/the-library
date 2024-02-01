@@ -11,14 +11,12 @@ function getPoolConnection(){
       ssl: 'Amazon RDS',
     });
 
-    const connection = async () => await pool.getConnection();
-    return connection
+    // const connection = async () => await pool.getConnection();
+    return pool
   } catch (err) {
+    console.log(err)
     return null
   }
 }
 
 export const connection =  getPoolConnection()
-
-
-

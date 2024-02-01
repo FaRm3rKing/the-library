@@ -3,10 +3,14 @@
 	import { Avatar } from '@skeletonlabs/skeleton';
 	import { AppShell } from '@skeletonlabs/skeleton';
 	import { initializeStores } from '@skeletonlabs/skeleton';
+	import { Modal } from '@skeletonlabs/skeleton';
+	import type { ModalComponent } from '@skeletonlabs/skeleton';
 	import { Drawer, getDrawerStore } from '@skeletonlabs/skeleton';
 	import type { DrawerSettings } from '@skeletonlabs/skeleton';
 	import { links } from '$lib/sidebar'
 	import { page } from '$app/stores'
+	import ModalBookmarksForm from '$lib/components/ModalBookmarksForm.svelte';
+
 
 	// right sidebar / drawer
 	initializeStores();
@@ -32,12 +36,21 @@
 	}
 	$:  title = deriveTitle($page.url.pathname)
 
+
+	// modal
+	const modalRegistry: Record<string, ModalComponent> = {
+		// Set a unique modal ID, then pass the component reference
+		modalBookmarksForm: { ref: ModalBookmarksForm },
+		// ...
+	};
+
 </script>
 
 <svelte:head>
 	<title>{title}</title>
 </svelte:head>
 
+<Modal components={modalRegistry}/>
 <Drawer position='right' regionDrawer='p-10 flex flex-col'>
 		<div>
 			<nav class="list-nav">
